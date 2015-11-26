@@ -55,6 +55,14 @@ public class RelationsInDocument {
 		return this.relations.size() == 0;
 	}
 	
+	public List<Triple> getAllTriples() {
+		List<Triple> triples = new ArrayList<>();
+		for(RelationsInSentence rs : this.relations) {
+			triples.addAll(rs.getAllTriple(documentUrl));
+		}
+		return triples;
+	}
+	
 	/**
 	 * Returns a pretty string representation of this RelationsInDocument object
 	 */

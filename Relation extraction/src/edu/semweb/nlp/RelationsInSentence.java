@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Bean class for representing co-occurring entities in a sentence, along with their types.
@@ -101,6 +102,72 @@ public class RelationsInSentence {
 			return true;
 		} else {
 			return entityCount <= 1;
+		}
+	}
+	
+	public List<Triple> getAllTriple(String sourceUrl) {
+		String[] types = {"PERSON", "ORGANIZATION"};
+		List<Triple> triples = new ArrayList<>();
+		for(int i = 0; i < types.length; i++) {
+			String type = types[i];
+			if(nerTaggedEntityMap.containsKey(type)) {
+				triples.addAll(getTriplesForType(type, sourceUrl));
+			}
+		}
+		return triples;
+	}
+	
+	private List<Triple> getTriplesForType(String subjectType, String sourceUrl) {
+		List<Triple> triples = new ArrayList<>();
+		List<String> entities = nerTaggedEntityMap.get(subjectType);
+		for(int i = 0; i < entities.size(); i++) {
+			String subject = entities.get(i);
+			for(Entry<String, List<String>> entry : nerTaggedEntityMap.entrySet()) {
+				String objectType = entry.getKey();
+				List<String> objectsList = entry.getValue();
+				for(int j = 0; j < objectsList.size(); j++) {
+					if(objectType.equals(subjectType) && i==j) {
+						continue;
+					}
+					String object = objectsList.get(j);
+					triples.add(new Triple(subject, getOwlClassForType(subjectType), getOwlPredicateForType(objectType), object, getOwlClassForType(objectType), this.sentence, sourceUrl));
+				}
+			}
+		}
+		return triples;
+	}
+	
+	private String getOwlClassForType(String type) {
+		switch(type) {
+		case "PERSON":
+			return "Person";
+		case "ORGANIZATION":
+			return "Organization";
+		case "LOCATION":
+			return "Location";
+		case "DATE":
+			return "Date";
+		case "MONEY":
+			return "Money";
+		default:
+			return null;
+		}
+	}
+	
+	private String getOwlPredicateForType(String type) {
+		switch(type) {
+		case "PERSON":
+			return "hasPerson";
+		case "ORGANIZATION":
+			return "hasOrganization";
+		case "LOCATION":
+			return "hasLocation";
+		case "DATE":
+			return "hasDate";
+		case "MONEY":
+			return "hasMoney";
+		default:
+			return null;
 		}
 	}
 
