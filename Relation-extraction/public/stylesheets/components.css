@@ -1,0 +1,124 @@
+.btn-blue {
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+  background-image: -o-linear-gradient(top, #3498db, #2980b9);
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  -webkit-border-radius: 6;
+  -moz-border-radius: 6;
+  border-radius: 6px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn-blue:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+
+.label-for-textfield {
+ font-size:18px;
+ color: #636359
+}
+
+.component-top-right {
+    position: absolute;
+    right: 2px;
+	top: 5px;
+    height: auto;
+}
+
+.component-top-right-absolute {
+    position: absolute;
+    right: 2px;
+	top: 5px;
+    height: auto;
+}
+
+.list-component-left{
+	float: left;
+	margin-right: 50px;
+}
+
+.list-component-right{
+	float:right;
+	width:50px;
+}
+
+.my-well{
+	min-height:20px;
+	min-width:78px;
+	padding:8px;
+	margin-bottom:8px;
+	background-color:#f5f5f5;
+	border:1px solid #e3e3e3;
+	border-radius:3px;
+	-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.05);
+	box-shadow:inset 0 1px 1px rgba(0,0,0,.05)
+}
+
+.my-container{
+	margin-top: 15px;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.hover-finger{
+	cursor:pointer;
+	cursor:hand;
+}
+
+.scrollable{
+	overflow: scroll;
+	height: 100vh;
+}
+
+.fix-after-scroll{
+	position: fixed;
+	top: 0px;
+	left: 15px;
+	width: auto;
+}
+
+.fix-on-top{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+}
+
+.orange-titlebar{
+	background-color: #aa5000;
+	background-image: -webkit-linear-gradient(top, #aa5000, #994000);
+	background-image: -moz-linear-gradient(top, #aa5000, #994000);
+	background-image: -ms-linear-gradient(top, #aa5000, #994000);
+	background-image: -o-linear-gradient(top, #aa5000, #994000);
+	background-image: linear-gradient(to bottom, #aa5000, #994000);
+}
+
+.grey-gradient{
+	background-color: #dcdcd4;
+	background-image: -webkit-linear-gradient(top, #deded8, #d4d4ca);
+	background-image: -moz-linear-gradient(top, #deded8, #d4d4ca);
+	background-image: -ms-linear-gradient(top, #deded8, #d4d4ca);
+	background-image: -o-linear-gradient(top, #deded8, #d4d4ca);
+	background-image: linear-gradient(to bottom, #deded8, #d4d4ca);
+}
+
+.result-source-item {
+	margin-bottom: 10px;
+	
+}
+.result-item-name{
+	margin-bottom: 10px;
+	font-size:18px;
+}

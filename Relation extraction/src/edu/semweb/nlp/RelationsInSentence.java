@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * Bean class for representing co-occurring entities in a sentence, along with their types.
@@ -34,11 +33,10 @@ public class RelationsInSentence {
 	 * @param entityName	The entity name, e.g., Bill Gates, Microsoft, Washington, etc.
 	 * @param entityType	Type of the entity
 	 * @return	true if the entity was successfully inserted, false otherwise (if a similar entity already exists. REFER: containsSimilarItem() defined later)
-	 * @throws IllegalArgumentException	If a String other than LOCATION, ORGANIZATION, DATE, MONEY, PERSON, PERCENT or TIME is passed as entityType
 	 */
-	public boolean addEntity(final String entityName, final String entityType) throws IllegalArgumentException {
+	public boolean addEntity(final String entityName, final String entityType) {
 		if(!entityType.matches("LOCATION|ORGANIZATION|DATE|MONEY|PERSON|PERCENT|TIME")) {
-			throw new IllegalArgumentException("Entity type '" + entityType + "' is not supported. Supported types are: LOCATION, ORGANIZATION, DATE, MONEY, PERSON, PERCENT, TIME");
+			return false;
 		}
 		if(nerTaggedEntityMap.containsKey(entityType)) {
 			final List<String> entityList = nerTaggedEntityMap.get(entityType);
@@ -104,40 +102,39 @@ public class RelationsInSentence {
 			return entityCount <= 1;
 		}
 	}
-	
-	public List<Triple> getAllTriple(String sourceUrl) {
-		String[] types = {"PERSON", "ORGANIZATION"};
-		List<Triple> triples = new ArrayList<>();
-		for(int i = 0; i < types.length; i++) {
-			String type = types[i];
+
+	public List<Triple> getAllTriple(final String sourceUrl) {
+		final String[] types = {"PERSON", "ORGANIZATION"};
+		final List<Triple> triples = new ArrayList<>();
+		for (final String type : types) {
 			if(nerTaggedEntityMap.containsKey(type)) {
 				triples.addAll(getTriplesForType(type, sourceUrl));
 			}
 		}
 		return triples;
 	}
-	
-	private List<Triple> getTriplesForType(String subjectType, String sourceUrl) {
-		List<Triple> triples = new ArrayList<>();
-		List<String> entities = nerTaggedEntityMap.get(subjectType);
+
+	private List<Triple> getTriplesForType(final String subjectType, final String sourceUrl) {
+		final List<Triple> triples = new ArrayList<>();
+		final List<String> entities = nerTaggedEntityMap.get(subjectType);
 		for(int i = 0; i < entities.size(); i++) {
-			String subject = entities.get(i);
-			for(Entry<String, List<String>> entry : nerTaggedEntityMap.entrySet()) {
-				String objectType = entry.getKey();
-				List<String> objectsList = entry.getValue();
+			final String subject = entities.get(i);
+			for(final Entry<String, List<String>> entry : nerTaggedEntityMap.entrySet()) {
+				final String objectType = entry.getKey();
+				final List<String> objectsList = entry.getValue();
 				for(int j = 0; j < objectsList.size(); j++) {
 					if(objectType.equals(subjectType) && i==j) {
 						continue;
 					}
-					String object = objectsList.get(j);
-					triples.add(new Triple(subject, getOwlClassForType(subjectType), getOwlPredicateForType(objectType), object, getOwlClassForType(objectType), this.sentence, sourceUrl));
+					final String object = objectsList.get(j);
+					triples.add(new Triple(subject, getOwlClassForType(subjectType), getOwlPredicateForType(objectType), object, getOwlClassForType(objectType), sentence, sourceUrl));
 				}
 			}
 		}
 		return triples;
 	}
-	
-	private String getOwlClassForType(String type) {
+
+	private String getOwlClassForType(final String type) {
 		switch(type) {
 		case "PERSON":
 			return "Person";
@@ -153,8 +150,8 @@ public class RelationsInSentence {
 			return null;
 		}
 	}
-	
-	private String getOwlPredicateForType(String type) {
+
+	private String getOwlPredicateForType(final String type) {
 		switch(type) {
 		case "PERSON":
 			return "hasPerson";

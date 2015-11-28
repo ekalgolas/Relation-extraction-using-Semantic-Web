@@ -1,0 +1,24 @@
+@(message: String, results: Map[String, List[Application.ResultInfo]]) 
+@import helper._ 
+
+@main("Related Organizations") {
+<div class="col-sm-10" id="content-area">
+	<h3 id="resultsType">@message</h3>
+	<div class="list-group" id="yourEvents">
+		@for(result <- results.keySet()){
+		<div class="list-group-item-white">
+			<div class="result-item-name">
+				@(result) <a id="hide" href="#">Show/Hide Sources</a>
+			</div>
+			@for(info <- results.get(result)){
+			<div id="dallsSources" class="well" style="display: none;">
+				<ul>
+					<li class="result-source-item"><a href="@(info.url)">@(info.url)</a> <br> @(info.sentence)</li>
+				</ul>
+			</div>
+			}
+		</div>
+		}
+	</div>
+</div>
+}

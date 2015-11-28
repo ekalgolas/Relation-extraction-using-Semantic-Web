@@ -5,19 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.impl.ReifiedStatementImpl;
 import org.apache.jena.vocabulary.RDF;
 
 import edu.semweb.nlp.RelationsInDocument;
-import edu.semweb.nlp.RelationsInSentence;
 import edu.semweb.nlp.Triple;
 
 /**
@@ -47,19 +42,19 @@ public class CustomOntology {
 		System.out.println(String.format("Load of %s took %.1f seconds", file,
 				time));
 
-		for (RelationsInDocument rd : rds) {
+		for (final RelationsInDocument rd : rds) {
 
-			List<Triple> triples = rd.getAllTriples();
+			final List<Triple> triples = rd.getAllTriples();
 
-			for (Triple triple : triples) {
-				Resource node = model.createResource();
+			for (final Triple triple : triples) {
+				final Resource node = model.createResource();
 				model.add(node, RDF.type, RDF.Statement);
-				Resource subject = model
+				final Resource subject = model
 						.createResource("http://www.semanticweb.org/Relation-extraction/"
 								+ triple.getSubjectType()
 								+ "#"
 								+ triple.getSubject().toLowerCase()
-										.replaceAll(" ", "-"));
+								.replaceAll(" ", "-"));
 				subject.addProperty(
 						model.createProperty("http://www.semanticweb.org/Relation-extraction/hasName"),
 						triple.getSubject());
@@ -67,12 +62,12 @@ public class CustomOntology {
 				model.add(node, RDF.predicate,
 						"http://www.semanticweb.org/Relation-extraction/"
 								+ triple.getPredicate());
-				Resource object = model
+				final Resource object = model
 						.createResource("http://www.semanticweb.org/Relation-extraction/"
 								+ triple.getObjectType()
 								+ "#"
 								+ triple.getObject().toLowerCase()
-										.replaceAll(" ", "-"));
+								.replaceAll(" ", "-"));
 				object.addProperty(
 						model.createProperty("http://www.semanticweb.org/Relation-extraction/hasName"),
 						triple.getObject());
@@ -90,9 +85,9 @@ public class CustomOntology {
 		}
 
 		// Write model to different formats
-		final FileWriter xmlWriter = new FileWriter("data/Lab1_4_EkalGolas.nt");
+		final FileWriter xmlWriter = new FileWriter("data/Results.xml");
 
-		model.write(xmlWriter, "N-TRIPLES");
+		model.write(xmlWriter, "RDF/XML");
 
 		return null;
 	}
