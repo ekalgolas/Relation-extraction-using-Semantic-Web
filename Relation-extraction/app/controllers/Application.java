@@ -39,7 +39,7 @@ public class Application extends Controller {
 	}
 
 	public Result organizations() {
-		final String query = "select distinct ?name ?sentence ?url where { " +
+		final String query = "select distinct ?personName ?name ?sentence ?url where { " +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#subject> ?entity .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate> \"http://www.semanticweb.org/Relation-extraction/hasOrganization\" .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#object> ?relation .\n" +
@@ -60,7 +60,7 @@ public class Application extends Controller {
 	}
 
 	public Result locations() {
-		final String query = "select distinct ?name ?sentence ?url where { " +
+		final String query = "select distinct ?personName ?name ?sentence ?url where { " +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#subject> ?entity .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate> \"http://www.semanticweb.org/Relation-extraction/hasLocation\" .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#object> ?relation .\n" +
@@ -81,7 +81,7 @@ public class Application extends Controller {
 	}
 
 	public Result dates() {
-		final String query = "select distinct ?name ?sentence ?url where { " +
+		final String query = "select distinct ?personName ?name ?sentence ?url where { " +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#subject> ?entity .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate> \"http://www.semanticweb.org/Relation-extraction/hasDate\" .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#object> ?relation .\n" +
@@ -102,7 +102,7 @@ public class Application extends Controller {
 	}
 
 	public Result values() {
-		final String query = "select distinct ?name ?sentence ?url where { " +
+		final String query = "select distinct ?personName ?name ?sentence ?url where { " +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#subject> ?entity .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate> \"http://www.semanticweb.org/Relation-extraction/hasMoney\" .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#object> ?relation .\n" +
@@ -124,7 +124,7 @@ public class Application extends Controller {
 
 	public Result people() {
 		form = searchForm.bindFromRequest();
-		final String query = "select distinct ?name ?sentence ?url where { " +
+		final String query = "select distinct ?personName ?name ?sentence ?url where { " +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#subject> ?entity .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate> \"http://www.semanticweb.org/Relation-extraction/hasPerson\" .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#object> ?relation .\n" +
@@ -145,7 +145,7 @@ public class Application extends Controller {
 	}
 
 	public Result peopleGet() {
-		final String query = "select distinct ?name ?sentence ?url where { " +
+		final String query = "select distinct ?personName ?name ?sentence ?url where { " +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#subject> ?entity .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate> \"http://www.semanticweb.org/Relation-extraction/hasPerson\" .\n" +
 				"?statement <http://www.w3.org/1999/02/22-rdf-syntax-ns#object> ?relation .\n" +
@@ -173,6 +173,7 @@ public class Application extends Controller {
 		public String	url;
 		public String	sentence;
 		public String	name;
+		public String	personName;
 	}
 
 	public HashMap<String, List<ResultInfo>> printResults(final String query) throws IOException {
@@ -194,13 +195,13 @@ public class Application extends Controller {
 			resultInfo.name = solution.get("name").asLiteral().getLexicalForm();
 			resultInfo.sentence = solution.get("sentence").asLiteral().getLexicalForm();
 			resultInfo.url = solution.get("url").asLiteral().getLexicalForm();
+			resultInfo.personName = solution.get("personName").asLiteral().getLexicalForm();
 
 			if (!resultInfos.containsKey(resultInfo.name)) {
-				resultInfos.put(resultInfo.name, new ArrayList<Application.ResultInfo>());
-
+				resultInfos.put(resultInfo.name + " : (Related to " + resultInfo.personName + ")", new ArrayList<Application.ResultInfo>());
 			}
 
-			resultInfos.get(resultInfo.name).add(resultInfo);
+			resultInfos.get(resultInfo.name + " : (Related to " + resultInfo.personName + ")").add(resultInfo);
 		}
 
 		return resultInfos;
